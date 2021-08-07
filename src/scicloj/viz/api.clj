@@ -35,7 +35,7 @@
 (defn- set-coordinates
   ([viz-map, field-name, {:keys [type] :as options}, field-key]
    (merge viz-map
-          {field-key field-name}
+          {field-key (name field-name)}
           (when type {(keyword (str (name field-key) "TYPE")) type})
           (dissoc options :type))))
 
