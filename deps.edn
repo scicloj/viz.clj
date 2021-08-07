@@ -1,11 +1,11 @@
 {:deps
  {org.clojure/clojure         {:mvn/version "1.10.2"}
   aerial.hanami/aerial.hanami {:mvn/version "0.12.7"}
-  techascent/tech.ml.dataset {:mvn/version "6.006"}}
+  techascent/tech.ml.dataset {:mvn/version "6.006"}
+  scicloj/notespace       {:mvn/version "3-beta7"}}
  :aliases
  {:dev
   {:extra-deps {clj-kondo               {:mvn/version "2021.03.03"}
-                scicloj/notespace       {:mvn/version "3-beta7"}
                 midje/midje             {:mvn/version "1.9.10"}
                 scicloj/tablecloth      {:mvn/version "6.00-beta-10"}
                 org.pinkgorilla/ui-vega {:mvn/version "0.0.16"}

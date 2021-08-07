@@ -1,4 +1,4 @@
-(ns viz.viz
+(ns scicloj.viz.viz
   (:require [aerial.hanami.common :as hc]
             [aerial.hanami.templates :as ht]
             [aerial.hanami.core :as hmi]
@@ -7,7 +7,7 @@
             [tablecloth.api :as tablecloth]
             [notespace.api :as notespace]
             [notespace.kinds :as kind]
-            [viz.api :as api]
+            [scicloj.viz.api :as api]
             [tech.v3.dataset :as tmd]))
 
 ^kind/vega
@@ -16,7 +16,6 @@
           :X "Horsepower" :Y "Miles_per_Gallon" :COLOR "Origin")
 
 
-^kind/vega
 (-> (api/data "data/cars.json")
     (api/type "point")
     (api/x "Horsepower")
@@ -25,16 +24,14 @@
     (api/viz))
 
 
-(def mpg-data (tmd/->dataset "resources/data/mpg.csv"))
+(defonce mpg-data (tmd/->dataset "resources/data/mpg.csv"))
 
-^kind/vega
 (-> (api/data mpg-data)
     (api/type "point")
     (api/x "displ")
     (api/y "hwy")
     (api/viz))
 
-^kind/vega
 (-> (api/data "data/cars.json")
     (api/type "boxplot")
     (api/x "Horsepower")
@@ -43,14 +40,12 @@
     (api/viz))
 
 
-^kind/dataset
 (-> "public/data/cars.json"
     io/resource
     slurp
     (cheshire.core/parse-string keyword)
     (tablecloth/dataset))
 
-^kind/dataset
 (tablecloth/dataset "resources/data/mpg.csv")
 
 ^kind/vega
@@ -113,3 +108,5 @@
           :FDATA "resources/data/diamonds.csv"
           :X "cut")
 
+
+:ok

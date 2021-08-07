@@ -1,4 +1,4 @@
-(ns viz.templates
+(ns scicloj.viz.templates
   (:require [aerial.hanami.templates :as ht]))
 
 (def boxplot-chart

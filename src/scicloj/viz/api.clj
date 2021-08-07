@@ -1,8 +1,10 @@
-(ns viz.api
+(ns scicloj.viz.api
   (:require [aerial.hanami.common :as hc]
             [aerial.hanami.templates :as ht]
-            [viz.templates :as vt]
-            [tech.v3.dataset :as tmd])
+            [scicloj.viz.templates :as vt]
+            [scicloj.viz.dataset] ; making sure datasets behave nicely in rendering
+            [tech.v3.dataset :as tmd]
+            [notespace.kinds :as kind])
   (:refer-clojure :exclude [type]))
 
 (def map-of-templates {"point" ht/point-chart
@@ -10,7 +12,12 @@
 
 (defn viz
   [{:keys [type] :as options}]
-  (apply hc/xform (map-of-templates type) (apply concat (dissoc options :type))))
+  (-> (apply hc/xform
+             (if (map? type) type
+                 ;; else -- lookup in cagalogue
+                 (map-of-templates (name type)))
+             (apply concat (dissoc options :type)))
+      (kind/override kind/vega)))
 
 (defn data
   "Pass the data as either url/file path (string) or dataset"
