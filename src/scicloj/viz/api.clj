@@ -4,7 +4,10 @@
             [scicloj.viz.templates :as vt]
             [scicloj.viz.dataset] ; making sure datasets behave nicely in rendering
             [tech.v3.dataset :as tmd]
-            [notespace.kinds :as kind])
+            [scicloj.kindly.api :as kindly]
+            [scicloj.kindly.kind :as kind]
+            [scicloj.tempfiles.api :as tempfiles]
+            [clojure.string :as string])
   (:refer-clojure :exclude [type]))
 
 (def map-of-templates {"point" ht/point-chart
@@ -17,15 +20,46 @@
                  ;; else -- lookup in cagalogue
                  (map-of-templates (name type)))
              (apply concat (dissoc options :type)))
-      (kind/override kind/vega)))
+      (kindly/consider kind/vega)))
+
+(defn path->file-extension [path]
+  (-> path
+      (string/split #"\.")
+      last
+      (->> (str "."))))
+
+;; (path->file-extension "data/cars.json")
+;; ".json"
+
+(defn as-url
+  [data]
+  (cond (string? data)
+        ;; either a route or a path to a file
+        (if (string/starts-with? data "http")
+          ;; already a url!
+          data
+          ;; else -- a path
+          (let [{:keys [path route]} (tempfiles/tempfile!
+                                    (path->file-extension data))]
+
+            ;; TODO -- do it more efficiently
+            (->> data
+                slurp
+                (spit path))
+            route))
+        (instance? tech.v3.dataset.impl.dataset.Dataset data)
+        ;; a tmd dataset
+        (let [{:keys [path route]} (tempfiles/tempfile! ".csv")]
+          (tmd/write! data path)
+          route)))
 
 (defn data
   "Pass the data as either url/file path (string) or dataset"
   [data]
   (cond (string? data)
-        {:UDATA data}
+        {:UDATA (as-url data)}
         (instance? tech.v3.dataset.impl.dataset.Dataset data)
-        {:DATA (tmd/mapseq-reader data)}
+        {:UDATA (as-url data)}
         :else {:DATA data}))
 
 (defn type
@@ -54,3 +88,4 @@
 (defn color
   [viz-map, color]
   (assoc viz-map :COLOR color))
+

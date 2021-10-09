@@ -17,4 +17,6 @@
                                      ["cljfmt" "check"]
                                      ["run" "-m" "clj-kondo.main" "--lint" "src:test"]]}
                    :plugins [[lein-midje "3.2.1"]
-                             [lein-cljfmt "0.7.0"]]}})
+                             [lein-cljfmt "0.7.0"]]
+                   :repl-options {:nrepl-middleware [scicloj.notespace.v4.nrepl/middleware]}}})
+
