@@ -5,6 +5,6 @@
 
 (extend-type tech.v3.dataset.impl.dataset.Dataset
   kindness/Kindness
-  (->behavior [this]
+  (->behaviour [this]
     {:render-src?   true
      :value->hiccup #'scicloj.kindly.view/dataset->md-hiccup}))
