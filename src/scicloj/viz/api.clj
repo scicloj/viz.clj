@@ -14,13 +14,15 @@
                        "boxplot" vt/boxplot-chart})
 
 (defn viz
-  [{:keys [type] :as options}]
-  (-> (apply hc/xform
-             (if (map? type) type
-                 ;; else -- lookup in cagalogue
-                 (map-of-templates (name type)))
-             (apply concat (dissoc options :type)))
-      (kindly/consider kind/vega)))
+  [& options-maps]
+  (let [options (apply merge options-maps)
+        typ (:type options)]
+    (-> (apply hc/xform
+               (if (map? typ) typ
+                   ;; else -- lookup in cagalogue
+                   (map-of-templates (name typ)))
+               (apply concat (dissoc options :type)))
+        (kindly/consider kind/vega))))
 
 (defn path->file-extension [path]
   (-> path
