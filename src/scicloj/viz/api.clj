@@ -14,8 +14,13 @@
                        "boxplot" vt/boxplot-chart})
 
 (defn viz
-  [& options-maps]
-  (let [options (apply merge options-maps)
+  [base-options & args]
+  (let [arg1 (first args)
+        additional-options (cond (nil? arg1) {}
+                                 (map? arg1)     (apply merge args)
+                                 (keyword? arg1) (apply hash-map args))
+        options (merge base-options
+                       additional-options)
         typ (:type options)]
     (-> (apply hc/xform
                (if (map? typ) typ
@@ -59,6 +64,13 @@
         {:UDATA (as-url data)}
         (instance? tech.v3.dataset.impl.dataset.Dataset data)
         {:UDATA (as-url data)}
+        (or (and (sequential? data)
+                 (every? map? data))
+            (and (map? data)
+                 (every? sequential? data)))
+        {:UDATA (-> data
+                    tmd/->dataset
+                    as-url)}
         :else {:DATA data}))
 
 (defn type
