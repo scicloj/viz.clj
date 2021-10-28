@@ -30,9 +30,6 @@
       last
       (->> (str "."))))
 
-;; (path->file-extension "data/cars.json")
-;; ".json"
-
 (defn as-url
   [data]
   (cond (string? data)
