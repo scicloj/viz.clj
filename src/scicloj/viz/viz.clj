@@ -5,8 +5,8 @@
             [clojure.java.io :as io]
             [cheshire.core]
             [tablecloth.api :as tablecloth]
-            [notespace.api :as notespace]
-            [notespace.kinds :as kind]
+            [scicloj.notespace.v4.api :as notespace]
+            [scicloj.kindly.kind :as kind]
             [scicloj.viz.api :as api]
             [tech.v3.dataset :as tmd]))
 

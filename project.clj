@@ -1,4 +1,4 @@
-(defproject org.scicloj/viz.clj "0.1.0-SNAPSHOT"
+(defproject org.scicloj/viz.clj "0.1.1-SNAPSHOT"
   :description "Data Visualization in Clojure"
   :url "https://github.com/scicloj/viz.clj"
   :scm {:name "git"
@@ -17,4 +17,6 @@
                                      ["cljfmt" "check"]
                                      ["run" "-m" "clj-kondo.main" "--lint" "src:test"]]}
                    :plugins [[lein-midje "3.2.1"]
-                             [lein-cljfmt "0.7.0"]]}})
+                             [lein-cljfmt "0.7.0"]]
+                   :repl-options {:nrepl-middleware [scicloj.notespace.v4.nrepl/middleware]}}})
+

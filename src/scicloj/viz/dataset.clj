@@ -1,10 +1,10 @@
 (ns scicloj.viz.dataset
   (:require [tech.v3.dataset.impl.dataset]
-            [notespace.behavior]
-            [notespace.view]))
+            [scicloj.kindly.kindness :as kindness]
+            [scicloj.kindly.view]))
 
 (extend-type tech.v3.dataset.impl.dataset.Dataset
-  notespace.behavior/Behaving
-  (->behavior [this]
+  kindness/Kindness
+  (->behaviour [this]
     {:render-src?   true
-     :value->hiccup #'notespace.view/dataset->md-hiccup}))
+     :value->hiccup #'scicloj.kindly.view/dataset->md-hiccup}))
