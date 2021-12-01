@@ -1,16 +1,17 @@
 {:deps
  {org.clojure/clojure         {:mvn/version "1.10.3"}
-  aerial.hanami/aerial.hanami {:mvn/version "0.12.9"}
+  aerial.hanami/aerial.hanami {:mvn/version "0.15.1"}
   techascent/tech.ml.dataset  {:mvn/version "6.031"}
+  scicloj/metamorph {:mvn/version "0.2.3"}
   org.scicloj/tempfiles       {:mvn/version "1-alpha2"}
   org.scicloj/kindly          {:mvn/version "1-alpha3"}}
  :aliases
  {:dev
-  {:extra-deps {clj-kondo               {:mvn/version "2021.03.03"}
-                midje/midje             {:mvn/version "1.9.10"}
-                org.pinkgorilla/ui-vega {:mvn/version "0.0.16"}
-                techascent/tech.viz     {:mvn/version "6.00-beta-16-2"}
-                scicloj/tablecloth      {:mvn/version "6.00-beta-10"}
-                generateme/fastmath     {:mvn/version "2.1.5"}
-                scicloj/notespace       {:mvn/version "4-alpha-13"}}}}}
-
+  {:extra-deps {clj-kondo                   {:mvn/version "2021.03.03"}
+                midje/midje                 {:mvn/version "1.9.10"}
+                org.pinkgorilla/ui-vega     {:mvn/version "0.0.16"}
+                techascent/tech.viz         {:mvn/version "6.00-beta-16-2"}
+                scicloj/tablecloth          {:mvn/version "6.00-beta-10"}
+                generateme/fastmath         {:mvn/version "2.1.5"}
+                scicloj/notespace           {:mvn/version "4-alpha-19"}
+                io.github.nextjournal/clerk {:mvn/version "0.3.233"}}}}}
