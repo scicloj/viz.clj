@@ -8,4 +8,11 @@
   (specter/transform [specter/MAP-VALS] f m))
 
 
+(defmacro return-exception-digest [form]
+  `(try ~form
+        (catch Exception e#
+          3
+          (-> e#
+              Throwable->map
+              (select-keys [:cause :data])))))
 

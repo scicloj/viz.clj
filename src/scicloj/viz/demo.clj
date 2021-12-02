@@ -1,6 +1,7 @@
 (ns viz.demo
   (:require [scicloj.notespace.v4.api :as notespace]
             [scicloj.viz.api :as viz]
+            [scicloj.viz.util :as util]
             [tech.v3.dataset :as tmd]
             [tablecloth.api :as tc]
             [tablecloth.pipeline :as tc-pipe]
@@ -15,6 +16,9 @@
 
 (scicloj.viz.config/use-tempfiles?)
 
+(util/return-exception-digest
+ (/ 1 0))
+
 (binding [scicloj.viz.config/*use-tempfiles?* true]
   (-> (viz/data "resources/data/mpg.csv")
       (viz/type "point")
@@ -29,23 +33,21 @@
       (viz/y "hwy")
       (viz/viz)))
 
-(try
-    (binding [scicloj.viz.config/*use-tempfiles?* true]
-      (-> (viz/data "resources/data/mpg-with-typo.csv")
-          (viz/type "point")
-          (viz/x "displ")
-          (viz/y "hwy")
-          (viz/viz)))
-    (catch Exception e e))
+(util/return-exception-digest
+ (binding [scicloj.viz.config/*use-tempfiles?* true]
+   (-> (viz/data "resources/data/mpg-with-typo.csv")
+       (viz/type "point")
+       (viz/x "displ")
+       (viz/y "hwy")
+       (viz/viz))))
 
-(try
+(util/return-exception-digest
   (binding [scicloj.viz.config/*use-tempfiles?* false]
     (-> (viz/data "resources/data/mpg-with-typo.csv")
         (viz/type "point")
         (viz/x "displ")
         (viz/y "hwy")
-        (viz/viz)))
-  (catch Exception e e))
+        (viz/viz))))
 
 (binding [scicloj.viz.config/*use-tempfiles?* true]
   (-> {:x (range 99)
@@ -95,15 +97,14 @@
       (viz/type "point")
       viz/viz))
 
-(try
+(util/return-exception-digest
   (-> {:x (range 99)
        :y (repeatedly 99 rand)}
       tmd/->dataset
       viz/data
       (viz/x "w")
       (viz/type "point")
-      (viz/viz))
-  (catch Exception e e))
+      (viz/viz)))
 
 (-> {:x (range 99)
      :y (repeatedly 99 rand)}
@@ -148,8 +149,6 @@
     (viz/type "point")
     (viz/viz))
 
-
-
 (-> {:x (range 99)
      :y (repeatedly 99 rand)}
     tmd/->dataset
@@ -182,37 +181,33 @@
          viz/->viz-map
          viz/viz)
 
-(try (-> {:data (-> {:a (range 99)
-                     :b (repeatedly 99 rand)}
-                    tmd/->dataset)
-          :x    :a
-          :y    :b}
-         viz/->viz-map
-         viz/viz)
-     (catch Exception e e))
+(util/return-exception-digest
+ (-> {:data (-> {:a (range 99)
+                 :b (repeatedly 99 rand)}
+                tmd/->dataset)
+      :x    :a
+      :y    :b}
+     viz/->viz-map
+     viz/viz))
 
-(try (-> {:data (-> {:a (range 99)
-                      o
-                     :b (repeatedly 99 rand)}
-                    tmd/->dataset)
-          :x    :a
-          :y    :b
-          :z    :c
-          :type ht/point-chart}
-         viz/->viz-map
-         viz/viz)
-     (catch Exception e e))
+(util/return-exception-digest
+ (-> {:data (-> {:a (range 99)
+                 :b (repeatedly 99 rand)}
+                tmd/->dataset)
+      :x    :a
+      :y    :b
+      :z    :c
+      :type ht/point-chart}
+     viz/->viz-map
+     viz/viz))
 
 (-> (-> {:x (range 9)
          :y (repeatedly 9 rand)}
         tmd/->dataset)
     viz/data
     (viz/layer {:type ht/point-chart
-                :color :x
-                :size 9})
+                :color :x})
     (viz/layer {:type ht/line-chart})
     viz/viz)
-
-
 
 
