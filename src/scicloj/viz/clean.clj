@@ -4,13 +4,15 @@
 
 ;; ### re:Clojure, Dec. 3-4 2021
 
-:_
+^:hidden
+(comment)
 
 ;; # setup
 (ns viz.clean
   (:require [scicloj.viz.api :as viz]
             [scicloj.viz.util :as util]
             [tablecloth.api :as tc]
+            [tech.v3.datatype.functional :as fun]
             [tablecloth.pipeline :as tc-pipe]
             [aerial.hanami.templates :as ht]))
 
@@ -19,7 +21,7 @@
   (require '[scicloj.notespace.v4.api :as notespace]
            '[scicloj.notespace.v4.run :as notespace.run])
   (notespace/merge-config! {:note-layout   :horizontal
-                            :ignore-nrepl? true})
+                            :ignore-nrepl? false})
   (notespace/restart!)
   (gorilla-notes.core/merge-new-options! {:buttons?  false
                                           :dropdown? true})
@@ -134,7 +136,7 @@
      :color :a
      :size  :b
      :type  ht/point-chart}
-    viz/->viz-map
+    viz/layer
     viz/viz)
 
 ;; # missing type
@@ -144,7 +146,7 @@
                 tc/dataset)
       :x    :a
       :y    :b}
-     viz/->viz-map
+     viz/layer
      viz/viz))
 
 ;; # including Hanami options
@@ -156,7 +158,7 @@
       :y      :b
       :MCOLOR "violet"
       :type   ht/point-chart}
-     viz/->viz-map
+     viz/layer
      viz/viz))
 
 ;; # layers
@@ -186,14 +188,12 @@
 ;; # regression layers
 (-> {:x (range 99)
      :y (map +
-             (range 99)
-             (repeatedly 99 #(* 20 (rand))))}
+         (range 99)
+         (repeatedly 99 #(* 20 (rand))))}
     tc/dataset
     viz/data
     (viz/layer {:type :point})
-    (viz/regression-layer {:x :x
-                           :y :y
-                           :MCOLOR "red"})
+    (viz/regression-layer)
     viz/viz)
 
 ;; # bye
