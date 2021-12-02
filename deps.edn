@@ -4,7 +4,8 @@
   techascent/tech.ml.dataset  {:mvn/version "6.031"}
   scicloj/metamorph {:mvn/version "0.2.3"}
   org.scicloj/tempfiles       {:mvn/version "1-alpha2"}
-  org.scicloj/kindly          {:mvn/version "1-alpha3"}}
+  org.scicloj/kindly          {:mvn/version "1-alpha3"}
+  scicloj/notespace           {:mvn/version "4-alpha-20"}}
  :aliases
  {:dev
   {:extra-deps {clj-kondo                   {:mvn/version "2021.03.03"}
