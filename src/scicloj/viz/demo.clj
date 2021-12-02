@@ -209,9 +209,9 @@
      viz/->viz-map
      viz/viz))
 
-(-> (-> {:x (range 9)
-         :y (repeatedly 9 rand)}
-        tmd/->dataset)
+(-> {:x (range 9)
+     :y (repeatedly 9 rand)}
+    tmd/->dataset
     viz/data
     (viz/layer {:type ht/point-chart
                 :color :x
@@ -230,4 +230,27 @@
                            :y (repeatedly 9 #(* 3 (rand)))}
                           tmd/->dataset)})
     viz/viz)
+
+(-> {:x (range 99)
+     :y (map +
+             (range 99)
+             (repeatedly 99 #(* 20 (rand))))}
+    tmd/->dataset
+    viz/data
+    (viz/layer {:type ht/point-chart})
+    viz/viz)
+
+
+(-> {:x (range 99)
+     :y (map +
+             (range 99)
+             (repeatedly 99 #(* 20 (rand))))}
+    tmd/->dataset
+    viz/data
+    (viz/layer {:type :point})
+    (viz/regression-layer {:x :x
+                           :y :y
+                           :MCOLOR "red"})
+    viz/viz)
+
 

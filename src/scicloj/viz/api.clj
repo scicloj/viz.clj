@@ -9,7 +9,8 @@
             [tech.v3.dataset :as tmd]
             [scicloj.viz.dataset :as dataset] ; making sure datasets behave nicely in rendering
             [scicloj.viz.config :as config]
-            [scicloj.viz.paths :as paths])
+            [scicloj.viz.paths :as paths]
+            [scicloj.viz.transform :as transform])
   (:refer-clojure :exclude [type]))
 
 (def map-of-templates {"point" ht/point-chart
@@ -143,7 +144,8 @@
                                  (size v))
                        :type  (-> viz-map
                                   (type v))
-                       viz-map))
+                       (-> viz-map
+                           (assoc k v))))
                    (if-let [d (:data options)]
                      (data d)
                      {})))))
@@ -153,5 +155,18 @@
    (layer {} options))
   ([viz-map options]
   (-> viz-map
-      (update :LAYER conj (->viz-map options))
+      (update :LAYER (fn [layers]
+                       (-> layers
+                           vec
+                           (conj (->viz-map options)))))
       (type ht/layer-chart))))
+
+
+(defn regression-layer [viz-map {:keys [x y data]
+                                 :as options}]
+  (-> viz-map
+      (layer (merge options
+                    {:data (-> data
+                               (or (:metamorph/data viz-map))
+                               (transform/regression-line x y))
+                     :type ht/line-chart}))))
