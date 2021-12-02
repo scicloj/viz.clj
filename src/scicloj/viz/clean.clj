@@ -1,4 +1,4 @@
-;; # viz.clj
+;; # Viz.clj : Data Visualization for Beginners
 
 ;; ## Ashima Panjwani
 
@@ -14,7 +14,11 @@
             [tablecloth.api :as tc]
             [tech.v3.datatype.functional :as fun]
             [tablecloth.pipeline :as tc-pipe]
-            [aerial.hanami.templates :as ht]))
+            [aerial.hanami.templates :as ht]
+            [scicloj.notespace.v4.api :as notespace]
+            [scicloj.notespace.v4.run :as notespace.run]
+            [scicloj.kindly.kind :as kind]
+            [scicloj.kindly.api :as kindly]))
 
 ^:hidden
 (comment
@@ -33,7 +37,8 @@
     (viz/type "point")
     (viz/x "displ")
     (viz/y "hwy")
-    (viz/viz))
+    (viz/viz)
+    (kindly/consider kind/naive))
 
 ;; # missing file
 (util/return-exception-digest
@@ -51,7 +56,7 @@
     (viz/type "point")
     viz/viz)
 
-;; # a t.m.d dataset
+;; # a tablecloth dataset
 (-> {:x (range 99)
      :y (repeatedly 99 rand)}
     tc/dataset
@@ -163,7 +168,7 @@
 
 ;; # layers
 (-> {:x (range 9)
-     :y (repeatedly 9 rand)}
+     :y (repeatedly 9 #(rand-int 5))}
     tc/dataset
     viz/data
     (viz/layer {:type ht/point-chart
@@ -177,7 +182,7 @@
                 :color :x
                 :size  :y
                 :data (-> {:x (range 9)
-                           :y (repeatedly 9 rand)}
+                           :y (repeatedly 9 #(rand-int 5))}
                           tc/dataset)})
     (viz/layer {:type ht/line-chart
                 :data (-> {:x (range 9)
