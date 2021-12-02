@@ -98,7 +98,7 @@
   ([viz-map field-name, {:keys [type] :as options}, field-key]
    (-> viz-map
        (dataset/throw-if-column-missing field-name)
-       (merge {field-key (name field-name)}
+       (merge {field-key field-name}
               (when type {(keyword (str (name field-key) "TYPE")) type})
               (dissoc options :viz/type)))))
 
@@ -162,11 +162,22 @@
       (type ht/layer-chart))))
 
 
-(defn regression-layer [viz-map {:keys [x y data]
-                                 :as options}]
-  (-> viz-map
-      (layer (merge options
-                    {:data (-> data
-                               (or (:metamorph/data viz-map))
-                               (transform/regression-line x y))
-                     :type ht/line-chart}))))
+(defn regression-layer
+  ([viz-map]
+   (regression-layer viz-map {}))
+  ([viz-map {:keys [x y data]
+             :or   {x (or (-> viz-map
+                              :X
+                              (or :x)))
+                    y (or (-> viz-map
+                              :Y
+                              (or :y)))}
+             :as   options}]
+   (-> viz-map
+       (layer (merge options
+                     {:data (-> data
+                                (or (:metamorph/data viz-map))
+                                (transform/regression-line x y))
+                      :type ht/line-chart})))))
+
+
