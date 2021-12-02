@@ -25,7 +25,7 @@
   (require '[scicloj.notespace.v4.api :as notespace]
            '[scicloj.notespace.v4.run :as notespace.run])
   (notespace/merge-config! {:note-layout   :horizontal
-                            :ignore-nrepl? false})
+                            :ignore-nrepl? true})
   (notespace/restart!)
   (gorilla-notes.core/merge-new-options! {:buttons?  false
                                           :dropdown? true})
