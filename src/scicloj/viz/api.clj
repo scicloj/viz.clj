@@ -23,17 +23,21 @@
                                  (keyword? arg1) (apply hash-map args))
         options (merge base-options
                        additional-options)
-        typ (:type options)
+        typ (:viz/type options)
+        _ (when (nil? typ)
+            (throw (ex-info "Missing viz type" {})))
         template (if (map? typ) typ
                      ;; else -- lookup in cagalogue
                      (map-of-templates (name typ)))]
-   (when (nil? typ)
-      (throw (ex-info "Missing viz type" {})))
-    (-> options
-        (dissoc :type)
-        (->> (apply concat)
-             (apply hc/xform template))
-        (kindly/consider kind/vega))))
+   (-> options
+       (dissoc :viz/type)
+       (update :LAYER
+               (fn [layers]
+                 (when layers
+                   (mapv viz layers))))
+       (->> (apply concat)
+            (apply hc/xform template))
+       (kindly/consider kind/vega))))
 
 
 (defn data-without-tempfiles [data]
@@ -44,10 +48,13 @@
                                         "csv" {:DATA (-> data
                                                          paths/throw-if-not-exists!
                                                          slurp)
-                                               :DFMT {:type file-type}}
+                                               :DFMT {:viz/type file-type}}
                                         (throw (ex-info "Unsupported file type"
                                                         {:file-type file-type})))))
-        (dataset/dataset? data) {:DATA (tmd/mapseq-reader data)
+        (dataset/dataset? data) {:DATA (fn [ctx]
+                                         (-> ctx
+                                             :metamorph/data
+                                             tmd/mapseq-reader))
                                  :metamorph/data data}
         :else                   {:DATA data}))
 
@@ -62,9 +69,12 @@
                                   slurp
                                   (spit path))
                              {:UDATA route}))
-        (dataset/dataset? data)      {:UDATA (let [{:keys [path route]} (tempfiles/tempfile! ".csv")]
-                                               (tmd/write! data path)
-                                               route)
+        (dataset/dataset? data)      {:UDATA (fn [ctx]
+                                               (let [{:keys [path route]} (tempfiles/tempfile! ".csv")]
+                                                 (-> ctx
+                                                     :metamorph/data
+                                                     (tmd/write! path))
+                                                 route))
                                       :metamorph/data data}
         (dataset/dataset-like? data) (-> data
                                          tmd/->dataset
@@ -81,7 +91,7 @@
 
 (defn type
   [viz-map type]
-  (assoc viz-map :type type))
+  (assoc viz-map :viz/type type))
 
 (defn- set-coordinates
   ([viz-map field-name, {:keys [type] :as options}, field-key]
@@ -89,7 +99,7 @@
        (dataset/throw-if-column-missing field-name)
        (merge {field-key (name field-name)}
               (when type {(keyword (str (name field-key) "TYPE")) type})
-              (dissoc options :type)))))
+              (dissoc options :viz/type)))))
 
 (defn x
   ([viz-map field-name]
@@ -109,3 +119,30 @@
       (dataset/throw-if-column-missing field-name)
       (assoc :COLOR (name field-name))))
 
+(defn ->viz-map [options]
+  (when-not (:type options)
+    (throw (ex-info "Options do not contain a type"
+                    {:keys (keys options)})))
+  (-> options
+      (dissoc :data)
+      (->> (reduce (fn [viz-map [k v]]
+                     (case k
+                       :x     (-> viz-map
+                                  (x v))
+                       :y     (-> viz-map
+                                  (y v))
+                       :color (-> viz-map
+                                  (color v))
+                       :type  (-> viz-map
+                                  (type v))
+                       (throw (ex-info "Invalid option"
+                                       {:key k}))))
+                   (if-let [d (:data options)]
+                     (data d)
+                     {})))))
+
+(defn layer
+  [viz-map options]
+  (-> viz-map
+      (update :LAYER conj (->viz-map options))
+      (type ht/layer-chart)))
