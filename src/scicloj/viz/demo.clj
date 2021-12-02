@@ -114,15 +114,14 @@
     (viz/type "point")
     (viz/viz))
 
-(try
+(util/return-exception-digest
   (-> {:x (range 99)
        :y (repeatedly 99 rand)}
       tmd/->dataset
       viz/data
       (viz/color :w)
       (viz/type "point")
-      (viz/viz))
-  (catch Exception e e))
+      (viz/viz)))
 
 (-> "https://vega.github.io/vega-lite/data/penguins.json"
     viz/data
@@ -139,6 +138,13 @@
     (viz/type "point")
     viz/viz)
 
+(-> {:x (range 99)
+     :y (repeatedly 99 rand)}
+    tmd/->dataset
+    viz/data
+    ((tc-pipe/add-column :z #(map + (:x %) (:y %))))
+    (viz/type "point")
+    (viz/viz))
 
 (-> {:x (range 99)
      :y (repeatedly 99 rand)}
@@ -172,14 +178,16 @@
     (assoc :background "#e9e6e3"))
 
 
-(-> {:data (-> {:a (range 99)
-                     :b (repeatedly 99 rand)}
-                    tmd/->dataset)
-          :x :a
-          :y :b
-          :type ht/point-chart}
-         viz/->viz-map
-         viz/viz)
+(-> {:data  (-> {:a (range 99)
+                 :b (repeatedly 99 rand)}
+               tmd/->dataset)
+     :x     :a
+     :y     :b
+     :color :a
+     :size  :b
+     :type  ht/point-chart}
+    viz/->viz-map
+    viz/viz)
 
 (util/return-exception-digest
  (-> {:data (-> {:a (range 99)
@@ -196,7 +204,7 @@
                 tmd/->dataset)
       :x    :a
       :y    :b
-      :z    :c
+      :z    :c ;; ignored
       :type ht/point-chart}
      viz/->viz-map
      viz/viz))
@@ -211,4 +219,15 @@
     (viz/layer {:type ht/line-chart})
     viz/viz)
 
+(-> (viz/layer {:type  ht/point-chart
+                :color :x
+                :size  :y
+                :data (-> {:x (range 9)
+                           :y (repeatedly 9 rand)}
+                          tmd/->dataset)})
+    (viz/layer {:type ht/line-chart
+                :data (-> {:x (range 9)
+                           :y (repeatedly 9 #(* 3 (rand)))}
+                          tmd/->dataset)})
+    viz/viz)
 
