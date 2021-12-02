@@ -143,14 +143,15 @@
                                  (size v))
                        :type  (-> viz-map
                                   (type v))
-                       (throw (ex-info "Invalid option"
-                                       {:key k}))))
+                       viz-map))
                    (if-let [d (:data options)]
                      (data d)
                      {})))))
 
 (defn layer
-  [viz-map options]
+  ([options]
+   (layer {} options))
+  ([viz-map options]
   (-> viz-map
       (update :LAYER conj (->viz-map options))
-      (type ht/layer-chart)))
+      (type ht/layer-chart))))
