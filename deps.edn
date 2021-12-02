@@ -13,5 +13,5 @@
                 techascent/tech.viz         {:mvn/version "6.00-beta-16-2"}
                 scicloj/tablecloth          {:mvn/version "6.00-beta-10"}
                 generateme/fastmath         {:mvn/version "2.1.5"}
-                scicloj/notespace           {:mvn/version "4-alpha-19"}
+                scicloj/notespace           {:mvn/version "4-alpha-20"}
                 io.github.nextjournal/clerk {:mvn/version "0.3.233"}}}}}
