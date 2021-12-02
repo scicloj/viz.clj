@@ -206,7 +206,8 @@
         tmd/->dataset)
     viz/data
     (viz/layer {:type ht/point-chart
-                :color :x})
+                :color :x
+                :size :y})
     (viz/layer {:type ht/line-chart})
     viz/viz)
 
