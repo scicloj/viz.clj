@@ -10,7 +10,8 @@
             [scicloj.viz.dataset :as dataset] ; making sure datasets behave nicely in rendering
             [scicloj.viz.config :as config]
             [scicloj.viz.paths :as paths]
-            [scicloj.viz.transform :as transform])
+            [scicloj.viz.transform :as transform]
+            [clojure.test])
   (:refer-clojure :exclude [type]))
 
 (declare histogram)
