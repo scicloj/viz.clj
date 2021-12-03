@@ -148,6 +148,16 @@
       (dataset/throw-if-column-missing field-name)
       (assoc :SIZE (name field-name))))
 
+(defn mark-color
+  [viz-map color]
+  (-> viz-map
+      (assoc :MCOLOR color)))
+
+(defn mark-size
+  [viz-map size]
+  (-> viz-map
+      (assoc :SIZE size)))
+
 (defn ->viz-map [options]
   (when-not (:type options)
     (throw (ex-info "Options do not contain a type"
