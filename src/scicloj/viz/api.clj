@@ -203,7 +203,7 @@
          (assoc :X "left"
                 :X2 "right"
                 :Y2 0
-                :Y "count")))))
-
+                :Y "count"
+                :XAXIS {:title x})))))
 
 
