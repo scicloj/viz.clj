@@ -6,7 +6,7 @@
   (merge
    ht/xy-encoding
    {:x2 {:field     :X2
-         :type      :XTYPE
+         :type      :X2TYPE
          :bin       :XBIN
          :timeUnit  :XUNIT
          :axis      :XAXIS
@@ -14,7 +14,7 @@
          :sort      :XSORT
          :aggregate :XAGG}
     :y2 {:field     :Y2
-         :type      :YTYPE
+         :type      :Y2TYPE
          :bin       :YBIN
          :timeUnit  :YUNIT
          :axis      :YAXIS
@@ -24,8 +24,16 @@
 
 (swap! hc/_defaults
        assoc
-       :X2 "x2"
-       :Y2 "y2"
+       :X2 com.rpl.specter/NONE
+       :Y2 com.rpl.specter/NONE
+       :X2TYPE (fn [ctx]
+                 (if (-> ctx :X2 (not= com.rpl.specter/NONE))
+                   (:XTYPE ctx)
+                   com.rpl.specter/NONE))
+       :Y2TYPE (fn [ctx]
+                 (if (-> ctx :Y2 (not= com.rpl.specter/NONE))
+                   (:YTYPE ctx)
+                   com.rpl.specter/NONE))
        :ENCODING extended-xy-encoding)
 
 (def boxplot-chart
