@@ -168,7 +168,7 @@
 
 (defn regression-line
   ([viz-map]
-   (regression-layer viz-map {}))
+   (regression-line viz-map {}))
   ([viz-map {:keys [x y data]
              :or   {x (or (-> viz-map
                               :X
