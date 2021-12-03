@@ -18,7 +18,6 @@
 
 (defn viz
   [base-options & args]
-  (println [:debug])
   (let [arg1               (first args)
         additional-options (cond (nil? arg1)     {}
                                  (map? arg1)     (apply merge args)
@@ -28,11 +27,7 @@
         typ                (:viz/type options)
         _                  (when (nil? typ)
                              (throw (ex-info "Missing viz type" {})))
-        _ (println [:typ typ])
         [template viz-map] (cond (vector? typ) (let [[f params] typ]
-                                                 (println [f
-                                                          options
-                                                          params])
                                                  (f options typ))
                                  (map? typ)    [typ options]
                                  :else         [(-> typ name map-of-types)
@@ -202,8 +197,6 @@
                   (or (:metamorph/data viz-map))
                   (get x)
                   (transform/bin options))]
-     (println [:bins bins
-               :data (data-impl bins)])
      [vt/rect-chart
       (-> bins
           data-impl
