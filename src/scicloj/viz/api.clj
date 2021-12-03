@@ -13,32 +13,39 @@
             [scicloj.viz.transform :as transform])
   (:refer-clojure :exclude [type]))
 
-(def map-of-templates {"point" ht/point-chart
-                       "boxplot" vt/boxplot-chart})
+(def map-of-types {"point"     ht/point-chart
+                   "boxplot"   vt/boxplot-chart})
 
 (defn viz
   [base-options & args]
-  (let [arg1 (first args)
-        additional-options (cond (nil? arg1) {}
+  (println [:debug])
+  (let [arg1               (first args)
+        additional-options (cond (nil? arg1)     {}
                                  (map? arg1)     (apply merge args)
                                  (keyword? arg1) (apply hash-map args))
-        options (merge base-options
-                       additional-options)
-        typ (:viz/type options)
-        _ (when (nil? typ)
-            (throw (ex-info "Missing viz type" {})))
-        template (if (map? typ) typ
-                     ;; else -- lookup in cagalogue
-                     (map-of-templates (name typ)))]
-   (-> options
-       (dissoc :viz/type)
-       (update :LAYER
-               (fn [layers]
-                 (when layers
-                   (mapv viz layers))))
-       (->> (apply concat)
-            (apply hc/xform template))
-       (kindly/consider kind/vega))))
+        options            (merge base-options
+                                          additional-options)
+        typ                (:viz/type options)
+        _                  (when (nil? typ)
+                             (throw (ex-info "Missing viz type" {})))
+        _ (println [:typ typ])
+        [template viz-map] (cond (vector? typ) (let [[f params] typ]
+                                                 (println [f
+                                                          options
+                                                          params])
+                                                 (f options typ))
+                                 (map? typ)    [typ options]
+                                 :else         [(-> typ name map-of-types)
+                                                options])]
+    (-> viz-map
+        (dissoc :viz/type)
+        (update :LAYER
+                (fn [layers]
+                  (when layers
+                    (mapv viz layers))))
+        (->> (apply concat)
+             (apply hc/xform template))
+        (kindly/consider kind/vega))))
 
 
 (defn data-without-tempfiles [data]
@@ -186,8 +193,6 @@
 
 
 (defn histogram
-  ([viz-map]
-   (histogram viz-map {}))
   ([viz-map {:keys [x data]
              :or   {x (or (-> viz-map
                               :X
@@ -197,13 +202,17 @@
                   (or (:metamorph/data viz-map))
                   (get x)
                   (transform/bin options))]
-     (-> bins
-         data-impl
-         (type vt/rect-chart)
-         (assoc :X "left"
-                :X2 "right"
-                :Y2 0
-                :Y "count"
-                :XAXIS {:title x})))))
+     (println [:bins bins
+               :data (data-impl bins)])
+     [vt/rect-chart
+      (-> bins
+          data-impl
+          (assoc :X "left"
+                 :X2 "right"
+                 :Y2 0
+                 :Y "count"
+                 :XAXIS {:title x})
+          (#(do (println [:OUT %])
+                %)))])))
 
 
