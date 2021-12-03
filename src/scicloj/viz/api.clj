@@ -17,7 +17,7 @@
 (declare histogram)
 (def map-of-types {"point"     ht/point-chart
                    "boxplot"   vt/boxplot-chart
-                   "histogram" histogram})
+                   "histogram" #'histogram})
 
 (defn fetch-type-from-map [typ]
   (cond (or (string? typ)
@@ -47,7 +47,7 @@
                                :viz/type
                                resolve-type)
         [template viz-map] (cond (vector? typ) (let [[f params] typ]
-                                                 (f options typ))
+                                                 (f options params))
                                  (map? typ)    [typ options])]
     (-> viz-map
         (dissoc :viz/type)
@@ -216,21 +216,21 @@
 
 (defn histogram
   [viz-map {:keys [x data]
-            :or   {x (or (-> viz-map
-                             :X
-                             (or :x)))}
+            :or   {data (:metamorph/data viz-map)
+                   x    (or (-> viz-map
+                                :X
+                                (or :x)))}
             :as   options}]
   (let [bins (-> data
-                 (or (:metamorph/data viz-map))
                  (get x)
                  (transform/bin options))]
     [vt/rect-chart
-     (-> bins
-         data-impl
-         (assoc :X "left"
+     (->  (-> options
+              (dissoc :x)
+              (merge (data-impl bins)))
+          (assoc :X "left"
                 :X2 "right"
                 :Y2 0
                 :Y "count"
                 :XAXIS {:title x}))]))
-
 
