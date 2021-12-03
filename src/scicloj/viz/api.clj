@@ -83,12 +83,16 @@
         :else                        {:DATA data}))
 
 
-(defn data
-  "Pass the data as either url/file path (string) or dataset"
+(defn data-impl
   [data]
   (if (config/use-tempfiles?)
     (data-with-tempfiles data)
     (data-without-tempfiles data)))
+
+(defn data
+  "Pass the data as either url/file path (string) or dataset"
+  [data]
+  (data-impl data))
 
 (defn type
   [viz-map type]
@@ -162,7 +166,7 @@
       (type ht/layer-chart))))
 
 
-(defn regression-layer
+(defn regression-line
   ([viz-map]
    (regression-layer viz-map {}))
   ([viz-map {:keys [x y data]
@@ -179,5 +183,27 @@
                                 (or (:metamorph/data viz-map))
                                 (transform/regression-line x y))
                       :type ht/line-chart})))))
+
+
+(defn histogram
+  ([viz-map]
+   (histogram viz-map {}))
+  ([viz-map {:keys [x data]
+             :or   {x (or (-> viz-map
+                              :X
+                              (or :x)))}
+             :as   options}]
+   (let [bins (-> data
+                  (or (:metamorph/data viz-map))
+                  (get x)
+                  (transform/bin options))]
+     (-> bins
+         data-impl
+         (type vt/rect-chart)
+         (assoc :X "left"
+                :X2 "right"
+                :Y2 0
+                :Y "count")))))
+
 
 
