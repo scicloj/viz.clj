@@ -13,8 +13,26 @@
             [scicloj.viz.transform :as transform])
   (:refer-clojure :exclude [type]))
 
+(declare histogram)
 (def map-of-types {"point"     ht/point-chart
-                   "boxplot"   vt/boxplot-chart})
+                   "boxplot"   vt/boxplot-chart
+                   "histogram" histogram})
+
+(defn fetch-type-from-map [typ]
+  (cond (or (string? typ)
+            (keyword? typ)) (-> typ name map-of-types)
+        :else               (throw (ex-info "Unsopported viz type" {:type typ}))))
+
+(defn resolve-type [typ]
+  (when (nil? typ)
+    (throw (ex-info "Missing viz type" {})))
+  (cond (vector? typ) (let [ftyp (first typ)]
+                        (if (clojure.test/function? ftyp)
+                          typ
+                          (into [(fetch-type-from-map ftyp)]
+                                (rest typ))))
+        (map? typ)    typ
+        :else         (fetch-type-from-map typ)))
 
 (defn viz
   [base-options & args]
@@ -23,15 +41,13 @@
                                  (map? arg1)     (apply merge args)
                                  (keyword? arg1) (apply hash-map args))
         options            (merge base-options
-                                          additional-options)
-        typ                (:viz/type options)
-        _                  (when (nil? typ)
-                             (throw (ex-info "Missing viz type" {})))
+                                  additional-options)
+        typ                (-> options
+                               :viz/type
+                               resolve-type)
         [template viz-map] (cond (vector? typ) (let [[f params] typ]
                                                  (f options typ))
-                                 (map? typ)    [typ options]
-                                 :else         [(-> typ name map-of-types)
-                                                options])]
+                                 (map? typ)    [typ options])]
     (-> viz-map
         (dissoc :viz/type)
         (update :LAYER
@@ -204,8 +220,6 @@
                  :X2 "right"
                  :Y2 0
                  :Y "count"
-                 :XAXIS {:title x})
-          (#(do (println [:OUT %])
-                %)))])))
+                 :XAXIS {:title x}))])))
 
 
