@@ -22,10 +22,8 @@
 
 ^:hidden
 (comment
-  (require '[scicloj.notespace.v4.api :as notespace]
-           '[scicloj.notespace.v4.run :as notespace.run])
-  (notespace/merge-config! {:note-layout   :horizontal
-                            :ignore-nrepl? true})
+  (notespace/merge-config! {:note-layout   :horizontal})
+  (notespace/merge-config! {:ignore-nrepl? true})
   (notespace/restart!)
   (gorilla-notes.core/merge-new-options! {:buttons?  false
                                           :dropdown? true})
@@ -198,8 +196,22 @@
     tc/dataset
     viz/data
     (viz/layer {:type :point})
-    (viz/regression-layer)
+    (viz/regression-line)
     viz/viz)
+
+;; # histogram
+(-> {:x (->> (fn []
+               (->> (partial rand-int 2)
+                    (repeatedly 200)
+                    (reduce +)))
+             (repeatedly 9999)
+             (map #(* % %)))}
+    tc/dataset
+    viz/data
+    (viz/histogram {:bin-count 30})
+    viz/viz)
+
 
 ;; # bye
 :bye
+
