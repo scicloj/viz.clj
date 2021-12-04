@@ -45,7 +45,7 @@ Viz.clj has been using a few sources of inspiration:
 
 * feedback of many user sessions at the Scicloj study groups
 
-* Vega/Vega-Lite wrappers of other ecosystems, such as [Altair](https://altair-viz.github.io/), [ggvis](https://ggvis.rstudio.com/), and [Vega-Lite API](https://vega.github.io/vega-lite-api/)
+* Vega/Vega-Lite wrappers of other ecosystems, such as [Altair](https://altair-viz.github.io/), [qplot](https://ggplot2.tidyverse.org/reference/qplot.html), [ggvis](https://ggvis.rstudio.com/), and [Vega-Lite API](https://vega.github.io/vega-lite-api/)
 
 * the Clojure habit of passing context maps through pipelines of functional transformations, demonstrated in Web infrastructure such as [Ring](https://github.com/ring-clojure/ring), event handling in UI libraries such as [cljfx](https://github.com/cljfx/cljfx), data science libraries such as [metamorph.ml](https://github.com/scicloj/metamorph.ml), and more
 
