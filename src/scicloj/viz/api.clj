@@ -15,7 +15,9 @@
   (:refer-clojure :exclude [type]))
 
 (declare histogram)
-(def map-of-types {"point"     ht/point-chart
+(def map-of-types {"line"     ht/line-chart
+                   "point"     ht/point-chart
+                   "bar"       ht/bar-chart
                    "boxplot"   vt/boxplot-chart
                    "histogram" #'histogram})
 
