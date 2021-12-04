@@ -1,11 +1,12 @@
-;; # Viz.clj tutorial
+;; **Viz.clj tutorial**
 
 ^:hidden
 (comment)
 
-;; # setup
+;; **setup**
 (ns viz.tutorial
   (:require [scicloj.viz.api :as viz]
+            [scicloj.viz.templates :as viz.templates]
             [scicloj.viz.util :as util]
             [tablecloth.api :as tc]
             [tech.v3.datatype.functional :as fun]
@@ -20,13 +21,14 @@
 (defn restart! []
   (notespace/merge-config! {:note-layout :horizontal})
   (notespace/restart!)
+  (notespace/render-as-html! "/tmp/page/index.html")
   (gorilla-notes.core/merge-new-options! {:buttons?  false
                                           :dropdown? true}))
 ^:hidden
 (comment
   (restart!))
 
-;; # basic example
+;; **basic example**
 
 (-> [{:x 1 :y 2}
      {:x 2 :y 4}
@@ -37,9 +39,9 @@
     (viz/mark-color "firebrick")
     (viz/viz))
 
-;; # specifying data sources
+;; **specifying data sources**
 
-
+;;
 ;; a sequence of maps
 (-> (for [i (range 99)]
       {:x i
@@ -71,8 +73,8 @@
     (viz/type "point")
     (viz/viz))
 
-;; # connecting aesthetics to data
-
+;; **connecting aesthetics to data**
+;;
 ;; x axis
 (-> {:w (range 99)
      :y (repeatedly 99 rand)}
@@ -109,8 +111,57 @@
     (viz/type "point")
     (viz/viz))
 
+;; **customizing mark properties**
 
-;; # more examples
+(-> {:x (range 99)
+     :y (repeatedly 99 rand)}
+    tc/dataset
+    viz/data
+    (viz/type "point")
+    (viz/mark-color "purple")
+    (viz/viz))
+
+(-> {:x (range 99)
+     :y (repeatedly 99 rand)}
+    tc/dataset
+    viz/data
+    (viz/type :point)
+    (viz/mark-size 500)
+    (viz/viz))
+
+;; **picking mark type**
+
+(-> {:x (range 99)
+     :y (repeatedly 99 rand)}
+    tc/dataset
+    viz/data
+    (viz/type :point)
+    (viz/viz))
+
+(-> {:x (range 99)
+     :y (repeatedly 99 rand)}
+    tc/dataset
+    viz/data
+    (viz/type :line)
+    (viz/viz))
+
+(-> {:x (range 99)
+     :y (repeatedly 99 rand)}
+    tc/dataset
+    viz/data
+    (viz/type :bar)
+    (viz/viz))
+
+;; **using Hanami templates**
+
+(-> {:x (range 99)
+     :y (repeatedly 99 rand)}
+    tc/dataset
+    viz/data
+    (viz/type ht/point-chart)
+    (viz/viz))
+
+;; **more examples**
 (-> "https://vega.github.io/vega-lite/data/penguins.json"
     viz/data
     (viz/x "Beak Length (mm)")
@@ -119,8 +170,8 @@
     (viz/type "point")
     viz/viz)
 
-;; # transforming during the viz pipeline
-
+;; **transforming during the viz pipeline**
+;;
 ;; some data, having numbers with different orders of magnitude
 (-> {:x (range 10)
      :y (map #(Math/pow 10 %)
@@ -143,7 +194,7 @@
     ((tablecloth.pipeline/update-columns [:y] fun/log10))
     (viz/viz))
 
-;; # tweaking the Hanami substitutions
+;; **tweaking the Hanami substitutions**
 (-> {:x (range 99)
      :y (repeatedly 99 rand)}
     tc/dataset
@@ -153,7 +204,7 @@
     (assoc :BACKGROUND "#e9e6e3")
     (viz/viz))
 
-;; # tweaking the resulting vega-lite spec
+;; **tweaking the resulting vega-lite spec**
 (-> {:x (range 99)
      :y (repeatedly 99 rand)}
     tc/dataset
@@ -163,7 +214,7 @@
     ;; tweaking vega-lite:
     (assoc :background "#e9e6e3"))
 
-;; # layers
+;; **layers**
 
 ;; same dataset
 (-> {:x (range 9)
@@ -189,7 +240,9 @@
                           tc/dataset)})
     viz/viz)
 
-;; # regression layers (computed in Clojure, not the browser)
+;; **regression layers**
+;;
+;; (computed in Clojure, not the browser)
 (-> {:x (range 99)
      :y (map +
          (range 99)
@@ -200,7 +253,9 @@
     (viz/regression-line)
     viz/viz)
 
-;; # histograms  (computed in Clojure, not the browser)
+;; **histograms**
+;;
+;; (computed in Clojure, not the browser)
 (-> {:x (->> (fn []
                (->> (partial rand-int 2)
                     (repeatedly 200)
@@ -213,6 +268,6 @@
     viz/viz)
 
 
-;; # bye
+;; **bye**
 :bye
 
