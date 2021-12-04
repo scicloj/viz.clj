@@ -18,7 +18,7 @@ This means the API may still change.
 
 ## Usage
 
-A tutorial is coming soon.
+[tutorial](https://scicloj.github.io/viz.clj/)
 
 ## The landscape
 
