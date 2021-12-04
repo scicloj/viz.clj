@@ -21,12 +21,12 @@
 (defn restart! []
   (notespace/merge-config! {:note-layout :horizontal})
   (notespace/restart!)
-  (notespace/render-as-html! "/tmp/page/index.html")
   (gorilla-notes.core/merge-new-options! {:buttons?  false
                                           :dropdown? true}))
 ^:hidden
 (comment
-  (restart!))
+  (restart!)
+  (notespace/render-as-html! "/tmp/page/index.html"))
 
 ;; **basic example**
 

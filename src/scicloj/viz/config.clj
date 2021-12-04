@@ -1,6 +1,6 @@
 (ns scicloj.viz.config)
 
-(def ^:dynamic *use-tempfiles?* nil)
+(def ^:dynamic *use-tempfiles?* false)
 
 (defn notespace-loaded? []
   (-> 'scicloj.notespace.v4.api/restart!
