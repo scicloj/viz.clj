@@ -33,7 +33,7 @@ Another great Clojure library that can generate Vega specs is [tech.viz](https:/
 Viz.clj wishes to add the following capabilities to the existing stack:
 * generate Vega-Lite specs expressed as pipelines of functional transformations
 * actually generate Hanami substitutions as the last step before Vega-Lite
-* thus allow the user to gradually learn & enjoy Hanami, by actually 
+* thus allow the user to gradually learn & enjoy Hanami
 * catch and explain common errors
 * integrate well with [tech.ml.dataset](https://github.com/techascent/tech.ml.dataset) / [Tablecloth](https://scicloj.github.io/tablecloth/index.html) as a data source
 * gradually grow a coherent grammar of plot transformations based on user feedback
