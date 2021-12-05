@@ -37,7 +37,7 @@ Viz.clj wishes to add the following capabilities to the existing stack:
 * catch and explain common errors
 * integrate well with [tech.ml.dataset](https://github.com/techascent/tech.ml.dataset) / [Tablecloth](https://scicloj.github.io/tablecloth/index.html) as a data source
 * gradually grow a coherent grammar of plot transformations based on user feedback
-* make the grammar place nicely with datasets transformations, following the [metamorph](https://github.com/scicloj/metamorph) approach
+* make the grammar play nicely with datasets transformations, following the [metamorph](https://github.com/scicloj/metamorph) approach
 
 ## The work process
 
