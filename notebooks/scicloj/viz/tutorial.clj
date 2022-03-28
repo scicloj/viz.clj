@@ -14,8 +14,8 @@
             [aerial.hanami.templates :as ht]
             [scicloj.notespace.v4.api :as notespace]
             [scicloj.notespace.v4.run :as notespace.run]
-            [scicloj.kindly.kind :as kind]
-            [scicloj.kindly.api :as kindly]))
+            [scicloj.kindly.v1.kind :as kind]
+            [scicloj.kindly.v1.api :as kindly]))
 
 ^:hidden
 (defn restart! []
@@ -36,7 +36,7 @@
     (viz/data)
     (viz/type :point)
     (viz/mark-size 200)
-    (viz/mark-color "firebrick")
+    (viz/color :x)
     (viz/viz))
 
 ;; **specifying data sources**
@@ -270,4 +270,3 @@
 
 ;; **bye**
 :bye
-

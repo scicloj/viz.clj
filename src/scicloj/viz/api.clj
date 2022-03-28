@@ -2,8 +2,8 @@
   (:require [aerial.hanami.common :as hc]
             [aerial.hanami.templates :as ht]
             [scicloj.viz.templates :as vt]
-            [scicloj.kindly.api :as kindly]
-            [scicloj.kindly.kind :as kind]
+            [scicloj.kindly.v1.api :as kindly]
+            [scicloj.kindly.v1.kind :as kind]
             [scicloj.tempfiles.api :as tempfiles]
             [clojure.string :as string]
             [tech.v3.dataset :as tmd]
@@ -235,4 +235,3 @@
                 :Y2 0
                 :Y "count"
                 :XAXIS {:title x}))]))
-

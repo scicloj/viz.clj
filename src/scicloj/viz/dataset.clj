@@ -2,14 +2,14 @@
   (:require [tech.v3.dataset.impl.dataset]
             [tech.v3.dataset :as tmd]
             [scicloj.tempfiles.api :as tempfiles]
-            [scicloj.kindly.kindness :as kindness]
-            [scicloj.kindly.view]))
+            [scicloj.kindly.v1.kindness :as kindness]
+            [scicloj.kindly.v1.view]))
 
 (extend-type tech.v3.dataset.impl.dataset.Dataset
   kindness/Kindness
   (->behaviour [this]
     {:render-src?   true
-     :value->hiccup #'scicloj.kindly.view/dataset->md-hiccup}))
+     :value->hiccup #'scicloj.kindly.v1.view/dataset->md-hiccup}))
 
 (defn dataset? [data]
   (instance? tech.v3.dataset.impl.dataset.Dataset data))
