@@ -2,11 +2,11 @@
   (:require [tech.v3.dataset.impl.dataset]
             [tech.v3.dataset :as tmd]
             [scicloj.tempfiles.api :as tempfiles]
-            [scicloj.kindly.v1.kindness :as kindness]
+            [scicloj.kindly.v1.kindness :as kindness.v1]
             [scicloj.kindly.v1.view]))
 
 (extend-type tech.v3.dataset.impl.dataset.Dataset
-  kindness/Kindness
+  kindness.v1/Kindness
   (->behaviour [this]
     {:render-src?   true
      :value->hiccup #'scicloj.kindly.v1.view/dataset->md-hiccup}))
