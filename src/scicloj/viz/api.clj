@@ -2,8 +2,8 @@
   (:require [aerial.hanami.common :as hc]
             [aerial.hanami.templates :as ht]
             [scicloj.viz.templates :as vt]
-            [scicloj.kindly.v1.api :as kindly.v1]
-            [scicloj.kindly.v1.kind :as kind.v1]
+            ;; [scicloj.kindly.v1.api :as kindly.v1]
+            ;; [scicloj.kindly.v1.kind :as kind.v1]
             [scicloj.kindly.v2.api :as kindly.v2]
             [scicloj.kindly.v2.kind :as kind.v2]
             [scicloj.tempfiles.api :as tempfiles]
@@ -61,8 +61,8 @@
                     (mapv viz layers))))
         (->> (apply concat)
              (apply hc/xform template))
-        (kindly.v1/consider kind.v1/vega)
-        (kindly.v2/consider :kind/vega-lite))))
+        #_(kindly.v1/consider kind.v1/vega)
+        (kindly.v2/consider :kind/vega))))
 
 
 (defn data-without-tempfiles [data]
