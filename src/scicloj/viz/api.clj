@@ -79,7 +79,8 @@
         (dataset/dataset? data) {:DATA (fn [ctx]
                                          (-> ctx
                                              :metamorph/data
-                                             tmd/mapseq-reader))
+                                             tmd/mapseq-reader
+                                             vec))
                                  :metamorph/data data}
         :else                   {:DATA data}))
 
