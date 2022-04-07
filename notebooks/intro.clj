@@ -38,7 +38,8 @@
             [scicloj.kindly.v2.kind :as kind]
             [scicloj.kindly.v2.api :as kindly]
             [scicloj.clay.v1.api :as clay]
-            [scicloj.clay.v1.tools :as tools]))
+            [scicloj.clay.v1.tools :as tools]
+            [nextjournal.clerk :as clerk]))
 
 (clay/start! {:tools [tools/clerk]})
 
@@ -377,3 +378,7 @@
     tc/dataset)
 
 :bye
+
+(comment
+  (clerk/build-static-app!
+   {:paths ["notebooks/intro.clj"]}))
