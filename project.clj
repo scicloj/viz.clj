@@ -1,4 +1,4 @@
-(defproject org.scicloj/viz.clj "0.1.3.1-SNAPSHOT"
+(defproject org.scicloj/viz.clj "0.1.3.1"
   :description "Data Visualization in Clojure"
   :url "https://github.com/scicloj/viz.clj"
   :scm {:name "git"
