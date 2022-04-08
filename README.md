@@ -22,7 +22,7 @@ This means the API may still change.
 
 Data visualization through [Vega](https://vega.github.io/vega/) and [Vega-Lite](https://vega.github.io/vega-lite/) is quite nice from Clojure. These libraries embrace the declarative approach, representing everything in plain JSON structures, and Clojure offers flexible and expressive ways to handle such situations.
 
-One quite powerful Clojure library for data visualization is [Hanami](github.com/jsa-aerial/hanami). Hanami offers, among other things, a recursive subsitution mechanism that can generate Vega/Vega-Lite specs using pre-defined defaults and templates. It is very general, extenible and user-customizable. While powerful, Hanami requires some time to learn. Also, user mistakes and data problems may result in errors which are not always easy to diagnose.
+One quite powerful Clojure library for data visualization is [Hanami](https://github.com/jsa-aerial/hanami). Hanami offers, among other things, a recursive subsitution mechanism that can generate Vega/Vega-Lite specs using pre-defined defaults and templates. It is very general, extenible and user-customizable. While powerful, Hanami requires some time to learn. Also, user mistakes and data problems may result in errors which are not always easy to diagnose.
 
 Another great Clojure library that can generate Vega specs is [tech.viz](https://github.com/techascent/tech.viz). It has a quite nice collection of data visualization functions. Some of them are capable of backend-side preprocessing (e.g.), and thus allow for a faster pathway compared to client side transformations (e.g., counting data in bins for a histogram).
 
