@@ -27,6 +27,9 @@
 ;; [Viz.clj - Clojure data visualization for beginners - Ashima Panjwani - re:Clojure 2021](https://www.youtube.com/watch?v=9Jfw7cTzbAs)
 
 ;; ## Setup
+
+;; Viz.clj can be used as a library together with any Clojure tool supporting Vega-Lite. For using it  with Clay, please see the [example project](https://github.com/scicloj/viz.clj/tree/master/examples/example-project).
+
 (ns scicloj.viz.intro
   (:require [scicloj.viz.api :as viz]
             [scicloj.viz.templates :as viz.templates]
@@ -126,7 +129,7 @@
 
 ;; Just like using Hanami allows one to use the full flexibility of Vega-Lite (but the beginner user may not need to worry about it too much), using Viz.clj allows one to use the full flexibility of Hanami (but the beginner user does not need to worry about it too much).
 
-;; Fot those who care about it, Viz.clj can be seen as a way to generate and apply Hanami Template substitutions in a dataset-friendly way (see examples with datasets below).
+;; For those who care about it, Viz.clj can be seen as a way to generate and apply Hanami Template substitutions in a dataset-friendly way (see examples with datasets below).
 
 ;; (Thus, it also provides a dydactic way of getting many useful examples of Hanami substitions.)
 
