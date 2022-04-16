@@ -23,6 +23,13 @@
                                          :rows (vec (tmd/rowvecs v))}
                                  :viewer :table})})
 
+(kindly/define-kind-behaviour!
+  :kind/dataset
+  {:scittle.viewer (fn [v]
+                     (-> {:column-names (tmd/column-names v)
+                          :row-vectors (vec (tmd/rowvecs v))}
+                         (kindly/consider :kind/table)))})
+
 (defn dataset? [data]
   (instance? tech.v3.dataset.impl.dataset.Dataset data))
 

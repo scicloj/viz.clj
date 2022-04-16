@@ -5,11 +5,13 @@
             [scicloj.viz.api :as viz]))
 
 (clay/start! {:tools [tools/clerk
-                      tools/portal]})
+                      tools/portal
+                      tools/scittle]})
 
 (comment
   (clay/restart! {:tools [tools/clerk
-                          tools/portal]}))
+                          tools/portal
+                          toolx/scittle]}))
 
 (-> [{:x 1 :y 2}
      {:x 2 :y 4}
@@ -19,3 +21,9 @@
     (viz/mark-size 200)
     (viz/color :x)
     viz/viz)
+
+
+(-> [{:x 1 :y 2}
+     {:x 2 :y 4}
+     {:x 3 :y 9}]
+    tc/dataset)

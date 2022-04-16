@@ -1,7 +1,8 @@
 # Change Log
 All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
 
-Coming soon
+## [1-alpha-2] - 2022-04-17
+- adding support for Clay's Scittle tool
 
 ## [1-alpha-1] - 2022-04-08
 - Kindly v2 dataset support
