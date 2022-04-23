@@ -12,8 +12,6 @@
 
 ;; It uses [Kindly](https://github.com/scicloj/kindly) to specify in what kinds of ways things should be viewed. Therefore, it is especially convenient to use from [Clay](https://github.com/scicloj/clay), which uses Kindly's kinds to direct various Clojure tools how to render things.
 
-;; For example, Viz.clj would make sure to mark the kind of [tech.ml.dataset](https://github.com/techascent/tech.ml.dataset) (and [Tablecloth](https://github.com/scicloj/tablecloth)) datasets appropriately, so that Clay can render them nicely as tables.
-
 ;; However, it is not limited to use with Kindly and Clay. Most of it would work in any Clojure tool that knows how to render Vega-Lite visualizations.
 
 ;; ### How was it created?
@@ -42,12 +40,16 @@
             [scicloj.kindly.v2.api :as kindly]
             [scicloj.clay.v1.api :as clay]
             [scicloj.clay.v1.tools :as tools]
+            [scicloj.clay.v1.tool.scittle :as scittle]
+            [scicloj.clay.v1.view.dataset]
             [nextjournal.clerk :as clerk]))
 
-(clay/start! {:tools [tools/clerk]})
+(clay/start! {:tools [tools/scittle]})
 
 (comment
-  (clay/restart! {:tools [tools/clerk tools/portal]}))
+  (clay/restart! {:tools [tools/scittle
+                          tools/clerk
+                          tools/portal]}))
 
 ;; ## Basic examples
 
@@ -186,14 +188,6 @@
 
 ;; This last way of using `Viz.clj` can be seen as just a thin convenience on top of calling Hanami directly.
 
-;; ## Datasets
-
-;; Viz.clj defines sensible rendering behaviour for datasets in Clay:
-
-(-> {:x (range 99)
-     :y (repeatedly 99 rand)}
-    tc/dataset)
-
 ;; ## Main principles of plot creation
 
 ;; ### Specifying data sources
@@ -201,7 +195,7 @@
 ;; The `viz/data` function allows to specify the data source for a plot. Several options are supported:
 
 ;;
-;; a sequence of maps
+;; #### a sequence of maps
 (-> (for [i (range 99)]
       {:x i
        :y (rand)})
@@ -209,14 +203,14 @@
     (viz/type "point")
     viz/viz)
 
-;; a local file
+;; #### a local file
 (-> (viz/data "resources/data/mpg.csv")
     (viz/type "point")
     (viz/x "displ")
     (viz/y "hwy")
     viz/viz)
 
-;; a file on the web
+;; #### a file on the web
 (-> "https://vega.github.io/vega-lite/data/penguins.json"
     viz/data
     (viz/x "Beak Length (mm)")
@@ -224,7 +218,7 @@
     (viz/type "point")
     viz/viz)
 
-;; a dataset (of tech.ml.dataset / Tablecloth)
+;; #### a dataset (of tech.ml.dataset / Tablecloth)
 (-> {:x (range 99)
      :y (repeatedly 99 rand)}
     tc/dataset
@@ -234,7 +228,7 @@
 
 ;; ### Connecting aesthetics to data
 
-;; x axis
+;; #### x axis
 (-> {:w (range 99)
      :y (repeatedly 99 rand)}
     tc/dataset
@@ -243,7 +237,7 @@
     (viz/type "point")
     viz/viz)
 
-;; y axis
+;; #### y axis
 (-> {:x (range 99)
      :z (repeatedly 99 rand)}
     tc/dataset
@@ -252,7 +246,7 @@
     (viz/type "point")
     viz/viz)
 
-;; color
+;; #### color
 (-> {:x (range 99)
      :y (repeatedly 99 rand)}
     tc/dataset
@@ -261,7 +255,7 @@
     (viz/type "point")
     viz/viz)
 
-;; size
+;; #### size
 (-> {:x (range 99)
      :y (repeatedly 99 rand)}
     tc/dataset
@@ -272,7 +266,7 @@
 
 ;; ### Customizing mark properties
 
-;; color
+;; #### color
 
 (-> {:x (range 99)
      :y (repeatedly 99 rand)}
@@ -282,7 +276,7 @@
     (viz/mark-color "purple")
     viz/viz)
 
-;; size
+;; #### size
 
 (-> {:x (range 99)
      :y (repeatedly 99 rand)}
@@ -294,7 +288,7 @@
 
 ;; ### Picking the mark type
 
-;; point
+;; #### point
 
 (-> {:x (range 99)
      :y (repeatedly 99 rand)}
@@ -303,7 +297,7 @@
     (viz/type :point)
     viz/viz)
 
-;; line
+;; #### line
 
 (-> {:x (range 99)
      :y (repeatedly 99 rand)}
@@ -312,7 +306,7 @@
     (viz/type :line)
     viz/viz)
 
-;; bar
+;; #### bar
 
 (-> {:x (range 99)
      :y (repeatedly 99 rand)}
@@ -321,7 +315,7 @@
     (viz/type :bar)
     viz/viz)
 
-;; a type determined by a Hanami chart template
+;; #### a type determined by a Hanami chart template
 
 (-> {:x (range 99)
      :y (repeatedly 99 rand)}
@@ -452,7 +446,7 @@
 
 ;; ## Layers
 
-;; same dataset
+;; #### same dataset
 (-> {:x (range 9)
      :y (repeatedly 9 #(rand-int 5))}
     tc/dataset
@@ -463,7 +457,7 @@
     (viz/layer {:type ht/line-chart})
     viz/viz)
 
-;; different datasets
+;; #### different datasets
 (-> (viz/layer {:type  ht/point-chart
                 :color :x
                 :size  :y
@@ -505,6 +499,7 @@
 
 :bye
 
+
 (comment
-  (clerk/build-static-app!
-   {:paths ["notebooks/intro.clj"]}))
+  (do (scittle/show-doc! "notebooks/intro.clj")
+      (scittle/write-html! "docs/index.html")))

@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
 
+## [1-alpha-3] - 2022-04-23
+- updated Clay version
+- removed the dataset-kind-handling part, which is now part of Clay
+
 ## [1-alpha-2] - 2022-04-17
 - adding support for Clay's Scittle tool
 
