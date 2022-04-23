@@ -16,7 +16,7 @@ As it has been doing since the middle of 2021, it will keep evolving for a while
 
 This means the API may still change.
 
-## [Usage](https://scicloj.github.io/viz.clj/#/notebooks/intro.clj)
+## [Usage](https://scicloj.github.io/viz.clj/)
 
 ## The landscape
 
