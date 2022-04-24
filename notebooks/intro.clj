@@ -500,6 +500,7 @@
 :bye
 
 
+^kind/hidden
 (comment
   (do (scittle/show-doc! "notebooks/intro.clj")
       (scittle/write-html! "docs/index.html")))
