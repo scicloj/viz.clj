@@ -73,14 +73,17 @@
                                         "csv" {:DATA (-> data
                                                          paths/throw-if-not-exists!
                                                          slurp)
-                                               :DFMT {:viz/type file-type}}
+                                               :DFMT {:type file-type}}
                                         (throw (ex-info "Unsupported file type"
                                                         {:file-type file-type})))))
         (dataset/dataset? data) {:DATA (fn [ctx]
-                                         (-> ctx
-                                             :metamorph/data
-                                             tmd/mapseq-reader
-                                             vec))
+                                         (let [{:keys [path _]} (tempfiles/tempfile! ".csv")]
+                                           (-> ctx
+                                               :metamorph/data
+                                               (tmd/write! path))
+                                           (-> path
+                                               slurp)))
+                                 :DFMT {:type "csv"}
                                  :metamorph/data data}
         :else                   {:DATA data}))
 
@@ -123,12 +126,15 @@
   [viz-map type]
   (assoc viz-map :viz/type type))
 
+(defn field-type-hanami-key [field-key]
+  (keyword (str (name field-key) "TYPE")))
+
 (defn- set-coordinates
   ([viz-map field-name, {:keys [type] :as options}, field-key]
    (-> viz-map
        (dataset/throw-if-column-missing field-name)
        (merge {field-key field-name}
-              (when type {(keyword (str (name field-key) "TYPE")) type})
+              (when type {(field-type-hanami-key field-key) type})
               (dissoc options :viz/type)))))
 
 (defn x

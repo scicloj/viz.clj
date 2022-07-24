@@ -16,7 +16,7 @@
 
 ;; ### How was it created?
 
-;; Viz.clj's development has been based was based on a research process by Ashima Panjwani, that was based on studying data-visualization APIs in various libraries and languages, as well as gradually evolving the Viz.clj API through testing with users at the [Scicloj study & dev groups](https://scicloj.github.io/docs/community/groups/).
+;; Viz.clj's development has been based on a research process by Ashima Panjwani, that was based on studying data-visualization APIs in various libraries and languages, as well as gradually evolving the Viz.clj API through testing with users at the [Scicloj study & dev groups](https://scicloj.github.io/docs/community/groups/).
 
 ;; That process is not considered finished yet.
 
@@ -413,8 +413,8 @@
 
 ;; Let us assign the naive kind to it, so that it renders as a plain data structure:
 
-(-> {:u (range 99)
-     :v (repeatedly 99 rand)}
+(-> {:u (range 9)
+     :v (repeatedly 9 rand)}
     tc/dataset
     viz/data
     (viz/x :u)
@@ -425,8 +425,8 @@
 
 ;; Now, let us tweak the Vega-Lite structure with a new background color:
 
-(-> {:x (range 99)
-     :y (repeatedly 99 rand)}
+(-> {:x (range 9)
+     :y (repeatedly 9 rand)}
     tc/dataset
     viz/data
     (viz/type "point")
@@ -435,8 +435,8 @@
     (assoc :background "#e9e6e3")
     kind/naive)
 
-(-> {:x (range 99)
-     :y (repeatedly 99 rand)}
+(-> {:x (range 9)
+     :y (repeatedly 9 rand)}
     tc/dataset
     viz/data
     (viz/type "point")
@@ -497,10 +497,30 @@
     (viz/type [:histogram {:bin-count 30}])
     viz/viz)
 
+;; ## time series
+
+(let [csv "time,temperature
+2005-01-01 06:00,16
+2005-01-01 14:00,32
+2005-01-01 22:00,29
+2005-01-02 06:00,14
+2005-01-02 14:00,31
+2005-01-02 22:00,29
+"
+      temperatures-file "/tmp/data.csv"]
+  (spit temperatures-file csv)
+  (-> temperatures-file
+      (tc/dataset {:key-fn keyword})
+      viz/data
+      (viz/type :line)
+      (viz/viz {:X "time"
+                :XTYPE "temporal"
+                :Y "temperature"})))
+
 :bye
 
 
-^kind/hidden
+^{:kind/hidden true}
 (comment
   (do (scittle/show-doc! "notebooks/intro.clj")
       (scittle/write-html! "docs/index.html")))

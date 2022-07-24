@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
 
+## [1-alpha-4] - 2022-07-25
+- passing datasets as csv to vega-lite, thus supporting dates and times
+
 ## [1-alpha-3] - 2022-04-23
 - updated Clay version
 - removed the dataset-kind-handling part, which is now part of Clay
@@ -17,5 +20,4 @@ All notable changes to this project will be documented in this file. This change
 
 ## [0.1.2] - 2022-03-28
 - adapting to change in kindly API namespaces (but still using Kindly v1)
-
 
