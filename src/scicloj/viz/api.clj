@@ -2,10 +2,8 @@
   (:require [aerial.hanami.common :as hc]
             [aerial.hanami.templates :as ht]
             [scicloj.viz.templates :as vt]
-            ;; [scicloj.kindly.v1.api :as kindly.v1]
-            ;; [scicloj.kindly.v1.kind :as kind.v1]
-            [scicloj.kindly.v2.api :as kindly.v2]
-            [scicloj.kindly.v2.kind :as kind.v2]
+            [scicloj.kindly.v3.api :as kindly.v3]
+            [scicloj.kindly.v3.kind :as kind.v3]
             [scicloj.tempfiles.api :as tempfiles]
             [clojure.string :as string]
             [tech.v3.dataset :as tmd]
@@ -62,7 +60,7 @@
         (->> (apply concat)
              (apply hc/xform template))
         #_(kindly.v1/consider kind.v1/vega)
-        (kindly.v2/consider :kind/vega))))
+        (kindly.v3/consider :kind/vega))))
 
 
 (defn data-without-tempfiles [data]

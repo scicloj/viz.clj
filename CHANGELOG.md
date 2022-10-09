@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
 
+## [1-alpha-5] - 2022-10-09
+- updated deps (Kindly, Clay, etc.)
+
 ## [1-alpha-4] - 2022-07-25
 - passing datasets as csv to vega-lite, thus supporting dates and times
 

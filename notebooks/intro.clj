@@ -38,18 +38,9 @@
             [aerial.hanami.templates :as ht]
             [scicloj.kindly.v2.kind :as kind]
             [scicloj.kindly.v2.api :as kindly]
-            [scicloj.clay.v1.api :as clay]
-            [scicloj.clay.v1.tools :as tools]
-            [scicloj.clay.v1.tool.scittle :as scittle]
-            [scicloj.clay.v1.view.dataset]
-            [nextjournal.clerk :as clerk]))
+            [scicloj.clay.v2.api :as clay]))
 
-(clay/start! {:tools [tools/scittle]})
-
-(comment
-  (clay/restart! {:tools [tools/scittle
-                          tools/clerk
-                          tools/portal]}))
+(clay/start!)
 
 ;; ## Basic examples
 
@@ -115,7 +106,7 @@
     (viz/color :x)
     viz/viz)
 
-;; Let us render it as a plain Clojure data structure, using the naive kind:
+;; Let us render it as a plain Clojure data structure:
 
 (-> [{:x 1 :y 2}
      {:x 2 :y 4}
@@ -125,7 +116,7 @@
     (viz/mark-size 200)
     (viz/color :x)
     viz/viz
-    kind/naive)
+    (kindly/consider :kind/pprint))
 
 ;; ## Just using Hanami
 
@@ -411,7 +402,8 @@
 
 ;; The value returned by `viz/viz` is a Vega-Lite spec (represented as a Clojure data structure). Due to Kindly metadata, it renders as a plot in Clay.
 
-;; Let us assign the naive kind to it, so that it renders as a plain data structure:
+;; Let us render it as a plain Clojure data structure:
+
 
 (-> {:u (range 9)
      :v (repeatedly 9 rand)}
@@ -421,7 +413,7 @@
     (viz/y :v)
     (viz/type "point")
     viz/viz
-    kind/naive)
+    (kindly/consider :kind/pprint))
 
 ;; Now, let us tweak the Vega-Lite structure with a new background color:
 
@@ -433,7 +425,7 @@
     viz/viz
     ;; tweaking vega-lite:
     (assoc :background "#e9e6e3")
-    kind/naive)
+    (kindly/consider :kind/pprint))
 
 (-> {:x (range 9)
      :y (repeatedly 9 rand)}
@@ -520,7 +512,8 @@
 :bye
 
 
-^{:kind/hidden true}
+^:kindly/hide-code?
 (comment
-  (do (scittle/show-doc! "notebooks/intro.clj")
-      (scittle/write-html! "docs/index.html")))
+  (do (clay/show-doc! "notebooks/intro.clj"
+                      {:toc? true})
+      (clay/write-html! "docs/index.html")))
